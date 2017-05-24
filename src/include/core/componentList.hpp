@@ -54,6 +54,7 @@
 #include <iocore/htkSource.hpp>
 
 // sinks:
+#include <io/rosSink.hpp>
 #include <core/nullSink.hpp>
 #include <iocore/csvSink.hpp>
 #include <iocore/datadumpSink.hpp>
@@ -212,6 +213,7 @@ DLLEXPORT const registerFunction componentlist[] = {
   cHtkSource::registerComponent,
 
   // sinks:
+  cRosSink::registerComponent,
   cNullSink::registerComponent,
   cCsvSink::registerComponent,
   cDatadumpSink::registerComponent,
