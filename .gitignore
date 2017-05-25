@@ -29,4 +29,7 @@ stamp-h1
 .libs/
 SMILExtract
 libopensmile.la
-
+models/
+*.arff
+*.csv
+*.wav

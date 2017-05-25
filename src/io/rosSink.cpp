@@ -58,7 +58,7 @@ SMILECOMPONENT_REGCOMP(cRosSink)
   SMILECOMPONENT_INHERIT_CONFIGTYPE("cDataSink")
 
     SMILECOMPONENT_IFNOTREGAGAIN_BEGIN
-    ct->setField("logfile","Ros logfile (default=(null) : no log file)",(const char*)NULL);
+    ct->makeMandatory(ct->setField("topic","The ROS topic where the data will be published.", (const char *)NULL));
 
   SMILECOMPONENT_IFNOTREGAGAIN_END
 
@@ -71,35 +71,46 @@ SMILECOMPONENT_CREATE(cRosSink)
 
 cRosSink::cRosSink(const char *_name) :
 cDataSink(_name),
-logfile(NULL)
+topic(NULL)
 {
 }
 
-void cRosSink::fetchConfig()
+void
+cRosSink::fetchConfig()
 {
   cDataSink::fetchConfig();
 
-  logfile = getStr("logfile");
-  if (logfile != NULL) { SMILE_IDBG(2,"Ros logfile = '%s'",logfile); }
+  topic = getStr("topic");
+  int argc = 0;
+  ros::init(argc, (char **)NULL, "emo_talker");
+  ros::NodeHandle rosNodeHandle;
+  rosPublisher = rosNodeHandle.advertise<std_msgs::String>(topic, 1);
 }
 
-
-int cRosSink::myFinaliseInstance()
+int
+cRosSink::myFinaliseInstance()
 {
   int ret = cDataSink::myFinaliseInstance();
   return ret;
 }
 
 /* code to receive and process turnStart and turnEnd messages */
-int cRosSink::processComponentMessage( cComponentMessage *_msg )
+int
+cRosSink::processComponentMessage( cComponentMessage *_msg )
 {
-  if (isMessageType(_msg,"classificationResult")) {
-    SMILE_PRINT("RECEIVED MESSAGE IN ROS SINK");
-    SMILE_PRINT("RESULT: '%s'", _msg->msgtext);
+  int result = 0;
+  if (isMessageType(_msg,"classificationResult") || isMessageType(_msg,"classificationResults")) {
+    SMILE_PRINT("Sending JSON message to %s from %s", topic, _msg->sender);
+    std_msgs::String rosMsg;
+    char * json = _msg->serializeToJson();
+    rosMsg.data = std::string(json);
+    rosPublisher.publish(rosMsg);
+    free(json);
   }
-  return 0;
+  return result;
 }
 
 cRosSink::~cRosSink()
 {
+  ros::shutdown();
 }

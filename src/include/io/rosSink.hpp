@@ -50,13 +50,17 @@
 #define COMPONENT_DESCRIPTION_CROSSINK "Send Classification results to ROS topics"
 
 #include <core/smileCommon.hpp>
-
 #include <core/dataSink.hpp>
 
+#include <ros/ros.h>
+#include <ros/node_handle.h>
+#include <std_msgs/String.h>
 
 class DLLEXPORT cRosSink : public cDataSink {
   private:
-	  const char * logfile;
+	  const char * topic;
+    ros::Publisher rosPublisher;
+    cComponentMessage * message;
 
   protected:
     SMILECOMPONENT_STATIC_DECL_PR
