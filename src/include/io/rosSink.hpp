@@ -59,8 +59,8 @@
 class DLLEXPORT cRosSink : public cDataSink {
   private:
 	  const char * topic;
+    ros::NodeHandle rosNodeHandle;
     ros::Publisher rosPublisher;
-    cComponentMessage * message;
 
   protected:
     SMILECOMPONENT_STATIC_DECL_PR

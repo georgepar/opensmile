@@ -81,9 +81,6 @@ cRosSink::fetchConfig()
   cDataSink::fetchConfig();
 
   topic = getStr("topic");
-  int argc = 0;
-  ros::init(argc, (char **)NULL, "emo_talker");
-  ros::NodeHandle rosNodeHandle;
   rosPublisher = rosNodeHandle.advertise<std_msgs::String>(topic, 1);
 }
 
@@ -112,5 +109,4 @@ cRosSink::processComponentMessage( cComponentMessage *_msg )
 
 cRosSink::~cRosSink()
 {
-  ros::shutdown();
 }
