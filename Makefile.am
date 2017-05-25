@@ -2,6 +2,8 @@ ACLOCAL_AMFLAGS = -I m4
 
 AUTOMAKE_OPTIONS = subdir-objects
 
+ROS_VERSION = kinetic
+
 bin_PROGRAMS = SMILExtract
 bin_PROGRAMS += ROSMILExtract
 #bin_PROGRAMS += SEMAINExtract
@@ -131,8 +133,8 @@ SMILELIB_SOURCES=\
 
   SMILE_SOURCES=$(SMILELIB_SOURCES)
 
-  SMILE_CPPFLAGS = -Isrc/include -Iprogsrc/include $(SEMAINEAPI_CPPFLAGS) $(PORTAUDIO_CPPFLAGS) $(OPENCV_CPPFLAGS) -ggdb $(PTHREAD_CFLAGS)
-  SMILE_LIBS =  $(PORTAUDIO_LDFLAGS) $(OPENCV_LDFLAGS) -lm $(SEMAINEAPI_LDFLAGS) $(PTHREAD_LIBS) $(DLIB) -L/opt/ros/indigo/lib -lroscpp
+  SMILE_CPPFLAGS = -I/opt/ros/$(ROS_VERSION)/include -Isrc/include -Iprogsrc/include $(SEMAINEAPI_CPPFLAGS) $(PORTAUDIO_CPPFLAGS) $(OPENCV_CPPFLAGS) -ggdb $(PTHREAD_CFLAGS)
+  SMILE_LIBS =  $(PORTAUDIO_LDFLAGS) $(OPENCV_LDFLAGS) -lm $(SEMAINEAPI_LDFLAGS) $(PTHREAD_LIBS) $(DLIB) -L/opt/ros/$(ROS_VERSION)/lib -lroscpp -L/usr/lib/x86_64-linux-gnu 
 
   SMILExtract_SOURCES = progsrc/rosmilextract/SMILExtract.cpp
   SMILExtract_CPPFLAGS = $(SMILE_CPPFLAGS)

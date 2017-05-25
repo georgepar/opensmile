@@ -28,6 +28,7 @@ stamp-h1
 *.lo
 .libs/
 SMILExtract
+ROSMILExtract
 libopensmile.la
 models/
 *.arff
